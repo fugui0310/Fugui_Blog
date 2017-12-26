@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/backend_index.css">
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/jquery-3.2.1.js"></script>
+
+    <script src="/static/kindeditor/kindeditor-all.js"></script>
+
+</head>
+
+<body>
+
+    <div id="main">
+        <div id="main_nav"><a href="http://home.cnblogs.com/set/" target="_blank">修改密码</a>|<a href="BlogBackup.aspx">备份</a>|<a href="http://www.cnblogs.com/Skins.aspx" target="_blank">模板</a></div>
+        <div id="main_head">
+            <div id="blog_title" style="margin-right: 20px"><a href="/blog/{{ request.user.username }}">{{ request.user.username }}</a></div>
+            <div id="SiteTitle"><a href="http://www.cnblogs.com/"><img alt="logo" src="/static/img/logo.png" /></a></div>
+        </div>
+
+        <div id="main_body">
+            <div id="main_wrap">
+                <div id="main_container" style="margin-top: 24px">
+                    <div id="sub_nav" style="height: 44px">
+&nbsp;
+                    </div>
+                    <div id="content_area" >
+                        <div id="post_list" >
+
+
+
+
+{% block content %}
+    <table cellspacing="0" cellpadding="0" border="0" >
+        <tr>
+            <th class="post-title">标题</th>
+            <th class="publish-status">发布状态</th>
+            <th>评论数</th>
+            <th>点赞数</th>
+            <th>操作</th>
+            <th>操作</th>
+        </tr>
+
+        {% for article in article_list %}
+            <tr id="post-row-7871306" class="alt">
+            <td class="post-title"><a href="http://www.cnblogs.com/yifugui/p/7871306.html" id="post_title_link_7871306">{{ article.title }}</a>({{ article.create_time |date:"Y-m-d H:i"}})</td>
+            <td>发布</td>
+            <td>{{ article.comment_count }}</td>
+            <td>{{ article.up_count }}</td>
+            <td><a href="">编辑</a></td>
+
+            <td><a href="">删除</a></td>
+        </tr>
+        {% endfor %}
+
+    {% endblock %}
+
+    </table>
+</div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div id="left_container">
+                <div id="left_nav">
+                    <h2 style="font-size:17px">操作</h2>
+                    <ul>
+                        <li><a href="/blog/backend/addarticle/">添加新随笔</a></li>
+                        <li><a href="/posts?postConfig=IsDraft" id="nav_draft">草稿箱</a></li>
+                        <li><a href="">设置默认编辑器</a></li>
+                        <li><a target="_blank" href="http://home.cnblogs.com/group/topic/8550.html">博客客户端</a></li>
+                        <li><a target="_blank" href="">博客签名</a></li>
+                        <li><a href="">博客备份</a></li>
+                        <li><a href="">博客搬家</a></li>
+                    </ul>
+                </div>
+                <div id="sidebar_categories">
+                    <h2 style="font-size:17px" >分类</h2>
+                    <ul id="post_categories">
+                        <li><a href="">[编辑分类]</a></li>
+                        {% for site in site_list %}
+                           <li><a href="">{{ site.name }}</a></li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="">联系我们</a><a href="">反馈问题</a>&copy;2017<a href="">博客园</a>/ 代码改变世界
+    </div>
+</body>
+
+
+
+</html>

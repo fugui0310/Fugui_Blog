@@ -1,0 +1,69 @@
+
+.article_region .article_con {
+    margin-left: 20px;
+}
+
+.updown .diggit {
+    width: 46px;
+    height: 52px;
+    background: url("/static/img/upup.gif") no-repeat;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 2px;
+    padding-top: 5px;
+}
+
+.updown .buryit {
+    margin-left: 20px;
+    width: 46px;
+    height: 52px;
+    background: url("/static/img/downdown.gif") no-repeat;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 2px;
+    padding-top: 5px;
+}
+
+.subComment_region #tbCommentAuthor {
+    background-position: 6px 0px;
+    background-image: url("/static/img/icon_form.gif");
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 4px 4px 4px 30px;
+    width: 300px;
+    font-size: 13px;
+}
+#commentform_title{
+    background-image: url("/static/img/icon_addcomment.gif");
+    background-repeat: no-repeat;
+    padding: 0 0 0 20px;
+    margin-bottom: 10px;
+}
+.feedbackItem {
+    padding: 8px;
+    border-bottom: 1px dotted #ccc;
+        color: #333;
+    font-family: verdana,Arial,Helvetica,sans-serif;
+    font-size: 10pt;
+    line-height: 1.8em;
+        display: block;
+}
+.feedbackManage{
+    float: right;
+}
+div.feedbackItem div.feedbackCon {
+    color: #888;
+    font-size: 12px;
+    line-height: 135%;
+    padding: 7px;
+    padding-right: 0;
+
+    display: block;
+
+}
+.comment_vote{
+    float: right;
+}
+.blog_comment_body{
+    margin-left: 20px;
+}

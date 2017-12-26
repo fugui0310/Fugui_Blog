@@ -1,0 +1,83 @@
+ body #header a {
+            text-decoration: none;
+        }
+
+        #header {
+            margin-top: -30px;
+        }
+
+        #header a {
+            color: white;
+        }
+
+        #blogTitle {
+            background: #1b6d85 left top repeat-x;
+            height: 76px;
+            padding: 0;
+
+        }
+
+        #blog-sidecolumn ul li {
+            list-style-type: none;
+            margin-left: -30px;
+            font-size: 14px;
+        }
+
+        #navigator #navList {
+            position: absolute;
+            right: 20px;
+            color: white;
+            margin-top: -30px;
+        }
+
+        #navList li {
+            float: left;
+            list-style-type: none;
+            padding: 0 20px;
+        }
+
+        #main {
+            width: 95%;
+            margin: 0 auto
+        }
+
+        .post_item_foot {
+            color: grey;
+            font-size: 10px;
+        }
+
+        .title h2 {
+            padding-top: 20px;
+            margin-left: 60px;
+        }
+
+        #sideBar h3 {
+            margin: 16px 0 0 -8px;
+            font-size: 14px;
+            text-align: left;
+            color: #fff;
+            background-color: #008eb7;
+            border-radius: 3px;
+            padding: 3px;
+            text-shadow: 2px 2px 3px #404040;
+        }
+
+        #calendar {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        #calendar {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        #calendar table {
+            width: 250px;
+            margin: 0 auto;
+        }
+        #img img {border-radius:25px;
+            -webkit-border-radius:25px;
+            -moz-border-radius:25px;
+            margin: 10px 30px;
+        }

@@ -1,0 +1,19 @@
+.avatar{
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+#avatar_img,#avatar_file{
+    position: absolute;
+    top:30px;
+    left: 0;
+    width: 80px;
+    height: 80px;
+}
+#avatar_file{
+    opacity: 0;
+}
+#subBtn{
+    width: 120px;
+    float: right;
+}

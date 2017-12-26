@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/jquery-3.2.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/reg.css">
+    <script src="/static/js/jquery.cookie.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+
+        <form class="form-horizontal" style="margin-top: 30px">
+
+            <div class="panel panel-primary col-md-6 col-md-offset-3" >
+                <div class="panel-heading" style="margin:0 -15px">用户注册</div>
+                <div class="panel-body">
+                    <div class="col-md-8 col-md-offset-2" >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            {{ form_obj.username }}
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            {{ form_obj.password }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">确认密码</label>
+                            {{ form_obj.repeat_pwd }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">邮箱</label>
+                            {{ form_obj.email }}
+                        </div>
+
+                        <div class="form-group avatar">
+                            <label for="avatar">头像</label>
+                            <img src="/static/img/default.png" alt="" id="avatar_img">
+                            <input type="file" class="form-control" id="avatar_file">
+                        </div>
+
+                            <input type="button" value="提交" class="btn btn-primary" id="subBtn" style="float: right"><span
+                                class="error"></span>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+
+{#<script src="/static/js/register.js"></script>#}
+
+<script>
+    // 头像预览
+
+    $("#avatar_file").change(function () {
+
+        var ele_file=$(this)[0].files[0];  //this.files
+        var reader=new FileReader();
+        reader.readAsDataURL(ele_file);
+        reader.onload=function () {
+            $("#avatar_img")[0].src=this.result
+        }
+
+    });
+
+    $("#subBtn").click(function () {
+
+        var formdata=new FormData();
+        formdata.append("username",$("#id_username").val());
+        formdata.append("password",$("#id_password").val());
+        formdata.append("repeat_pwd",$("#id_repeat_pwd").val());
+        formdata.append("email",$("#id_email").val());
+        formdata.append("avatar_img",$("#avatar_file")[0].files[0]);
+        $(".pull-right").html(' ');
+        $(".pull-right").parent().removeClass("has-error");
+        $.ajax({
+            url:"/register/",
+            type:'POST',
+            data:formdata,
+            contentType:false,
+            processData:false,
+            headers:{"X-CSRFToken":$.cookie('csrftoken')},
+            success:function (data) {
+                  console.log(data);
+                var data=JSON.parse(data);
+
+                if (data.user){
+                    location.href="/login/"
+                }
+                else {
+
+                    console.log(data.errorsList);
+
+                   $.each(data.errorsList,function (i,j) {
+                       console.log(i,j);
+
+                       $span=$("<span>");
+                       $span.addClass("pull-right").css("color","red");
+                       $span.html(j[0]);
+                       $("#id_"+i).after($span).parent().addClass("has-error")
+
+                       if (i=="__all__"){
+                            $("#id_repeat_pwd").after($span)
+                       }
+                   })
+
+
+                }
+
+
+            }
+        })
+    })
+</script>
+</body>
+</html>

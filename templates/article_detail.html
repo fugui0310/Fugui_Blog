@@ -1,0 +1,196 @@
+{% extends "homeSite.html" %}
+
+{% block content %}
+    <div class="article_region">
+        <div class="row">
+            <h3 class="text-center">{{ article_obj.title }}</h3>
+            <div class="article_con">{{ article_obj.articledetail.content|safe }}</div>
+        </div>
+    </div>
+
+    <div class="updown row">
+        <div class="buryit pull-right">
+            <span class="burynum" id="bury_count">{{ article_obj.down_count }}</span>
+        </div>
+        <div class="diggit pull-right">
+            <span class="diggnum" id="digg_count">{{ article_obj.up_count }}</span>
+        </div>
+    </div>
+    <span class="diggnum_error pull-right"></span>
+
+
+    <div class="subComment_region ">
+    <h5>已发表评论(评论树):</h5>
+         <div class="comment_tree_list">
+
+
+         </div>
+
+        <h5 style="margin-bottom: -15px"><b>评论列表：</b></h5>
+        <hr>
+        <div class="comment_load">
+        {% for comment in articleComment %}
+        <div class="feedbackItem">
+                    <div class="feedbackListSubtitle">
+                        <div class="feedbackManage">
+                            &nbsp;&nbsp;<span class="comment_actions"><a id="comment_reply" reply_username="{{ comment.user.username }} " comment_id="{{ comment.nid }}">回复</a>&nbsp;<a href="">引用</a></span>
+                        </div>
+                        <a href="#3762185" class="layer">#{{ forloop.counter }}楼</a><span class="comment_date"> {{ comment.create_time|date:"Y-m-d H-i" }}</span> <a id="a_comment_author_3762185" href="/blog/{{ comment.user.username }}" target="_blank">{{ comment.user.username }}</a> <a href="http://msg.cnblogs.com/send/hz_pythoner" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+                    </div>
+                    <div class="feedbackCon">
+                        {% if comment.parent_comment_id %}
+                           <div class="blog_comment_body"><p style="font-size: 14px;color: #338800;margin-left: -15px"><a href="/blog/{{ comment.parent_comment.user.username }}">@{{ comment.parent_comment.user.username }}</a>&nbsp;&nbsp;&nbsp;{{ comment.parent_comment.content }}</p><p>{{ comment.content }}</p> </div><div class="comment_vote"><a href="" class="comment_digg">支持({{ comment.up_count }})&nbsp;</a><a href="" class="comment_bury">反对({{ comment.down_count }})</a></div>
+                            {% else %}
+                             <div class="blog_comment_body"><p>{{ comment.content }}</p> </div><div class="comment_vote"><a href="" class="comment_digg">支持({{ comment.up_count }})&nbsp;</a><a href="" class="comment_bury">反对({{ comment.down_count }})</a></div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+        <span class="comment_list"></span>
+        <h5 id="commentform_title" >发表评论：</h5>
+        <p>昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50" value="{{ request.user.username }}"></p>
+        <p>评论内容：</p>
+        <form action="">
+            {% csrf_token %}
+            <p><textarea name="" id="comment_text" cols="60" rows="10"></textarea></p>
+            <input type="button" value="提交评论" class="btn btn-default comment">
+        </form>
+    </div>
+
+ <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script>
+
+    // 实现ajax点赞
+        $(".diggit").click(function () {
+         if ($.cookie('user_username')){
+               $.ajax({
+                url: "/blog/poll/",
+                type: "post",
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    article_id: "{{ article_obj.nid }}"
+                },
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                success: function (data) {
+                    var data = JSON.parse(data);   // pollResponse
+                    if (data.state) {
+                        var val = parseInt($("#digg_count").html()) + 1;
+                        $("#digg_count").html(val)
+                    }
+                    else if (data.is_repeat) {
+                        $(".diggnum_error").html("重复提交").css("color", "red").delay(3000).fadeOut('slow').show()
+                    }
+                }
+            })
+         }
+
+         else {
+             location.href="/login/?next="+location.pathname
+         }
+        });
+    // 实现ajax反对
+        $(".buryit").click(function () {
+            $.ajax({
+                url: "/blog/down/",
+                type: "post",
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    article_id: "{{ article_obj.nid }}"
+                },
+                success: function (data) {
+                    var data = JSON.parse(data);   // pollResponse
+                    if (data.state) {
+                        var val = parseInt($("#bury_count").html()) + 1;
+                        $("#bury_count").html(val)
+                    }
+                    else if (data.is_repeat) {
+                        $(".diggnum_error").html("重复提交").css("color", "red").delay(3000).fadeOut('show').show()
+                    }
+                }
+            })
+        });
+    // 实现ajax评论
+        $(".comment").click(function () {
+            var content;
+            if(parent_comment_id){
+                var index=$("#comment_text").val().indexOf("\n");     // 子评论
+                content= $("#comment_text").val().slice(index+1)
+{#                console.log(content)#}
+            }else {
+                content=$("#comment_text").val()
+            }
+            if ($.cookie('user_username')) {
+                $.ajax({
+
+                    url: "/blog/comment/",
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                        article_id: "{{ article_obj.nid }}",
+                        comment_text: content,
+                        parent_comment_id: parent_comment_id
+                    },
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if (data.state) {
+                            $('.comment_load').load('/blog/{{ current_user.username }}/articles/{{ article_obj.nid }} .comment_load')
+                        }
+                        $("#comment_text").val("")
+                        parent_comment_id = null;
+                    }
+
+                })
+            }
+             else {
+             location.href="/login/?next="+location.pathname
+         }
+        })
+    //实现ajax评论的评论
+        var  parent_comment_id=null;
+        $('.comment_load').on("click","#comment_reply",function () {
+             var parent_comment_username=$(this).attr("reply_username");
+{#                console.log(parent_comment_username);#}
+             $("#comment_text").focus();
+             $("#comment_text").val("@"+parent_comment_username+"\n");
+             parent_comment_id=$(this).attr("comment_id");
+
+    })
+
+{#    //获取评论树#}
+{#        $.ajax({#}
+{#            url:"/blog/commentTree/{{ article_obj.nid }}",#}
+{#            success:function (data) {#}
+{#                var data = JSON.parse(data);#}
+{#                var s=showCommentTree(data);#}
+{#                $(".comment_tree_list").append(s);#}
+{#            }#}
+{#        })#}
+{#    //展开评论树#}
+{#    function showCommentTree(comment_list) {#}
+{#        var html="";#}
+{##}
+{#        $.each(comment_list,function (i,comment_dict) {#}
+{#            var val=comment_dict["content"];#}
+{#            var commnent_str= '<div class="comment"><div class="content"><span>'+val+'</span></div>';#}
+{##}
+{#            if(comment_dict["chidren_commentList"]){#}
+{#                var s=showCommentTree(comment_dict["chidren_commentList"]);    // [{},{}]#}
+{#                commnent_str+=s#}
+{#            }#}
+{##}
+{#            commnent_str+="</div>";#}
+{#            html+=commnent_str#}
+{#        });#}
+{##}
+{#        return html#}
+{#    }#}
+
+    </script>
+
+
+{% endblock %}

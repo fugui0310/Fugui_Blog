@@ -1,0 +1,32 @@
+{% extends "backend_index.html" %}
+{% block content %}
+    <style>
+    input{width: 100%;padding: -15px}
+    </style>
+    <script src="/static/kindeditor/kindeditor-all.js"></script>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加随笔</h3>
+      </div>
+      <div class="panel-body">
+        <form action="/blog/backend/addarticle/" method="post" novalidate>
+            {% csrf_token %}
+            <label for="title">
+                <h5>标题：</h5>
+            </label>
+             <p>{{ article_form.title }}</p>
+{#            <input type="text" class="col-md-12 form-control" style="height: 25px">#}
+            <label for="title"><h5>内容(KindEditor编辑器)：</h5></label>
+             <p>{{ article_form.content }}</p>
+{#            <textarea name="" id="editor_id" cols="150" rows="30" style="margin-top: -10px"></textarea>#}
+            <br>
+{#            <button  style="height: 30px;width: 100px;background-color: #6B86B3;margin-top: 10px">提交</button>#}
+
+
+            <input type="submit" value="提交" >
+        </form>
+      </div>
+    </div>
+
+<script src="/static/js/kindeditor.js"></script>
+{% endblock %}

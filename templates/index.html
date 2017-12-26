@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>base</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+
+            <a class="navbar-brand" href="/">博客园</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                    <li><a href=""><span class="glyphicon glyphicon-user"></span>{{ request.user.username }}</a></li>
+                    <li><a href="/logout/">注销</a></li>
+                {% else %}
+                    <li><a href="/login/">登录</a></li>
+                    <li><a href="/reg/">注册</a></li>
+                {% endif %}
+                <li><a href="#">修改密码</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+
+    <div class="row ">
+        <div class="col-md-2">
+            <div class="panel panel-primary">
+                <div class="panel-body" style="background-color: #2b6695">
+                    网站分类
+                </div>
+                <div class="panel-footer">
+                    {% for cate in site_list %}
+                        <div class="panel panel-default">
+                            <div class="panel-body cate_title_muse">{{ cate.name }}</div>
+                            <div class="panel-footer hides">
+                                {% for sitearticlecategory in cate.sitearticlecategory_set.all %}
+                                    <p><a href="/cate/{{ sitearticlecategory.name }}">{{ sitearticlecategory.name }}</a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            {% for item in data_list %}
+                <h3><a class="titlelnk" href="/blog/{{ item.user.username }}/articles/{{ item.nid }}" target="_blank">{{ item.title }}</a></h3>
+                <div class="post_item_summary">
+                    <div style="float: left">
+                        <a href="/blog/{{ item.user.username }}" target="_blank"><img width="60" height="60" class="pfs"
+                                                         src="/media/{{ item.user.avatar }}"
+                                                         alt=""/></a>
+                    </div>
+                    <div style="margin-left: 70px">{{ item.desc }} ...</div>
+
+
+                </div>
+                <br>
+                <div class="post_item_foot">
+                    <a href="/blog/{{ item.user.username }}" class="lightblue">{{ item.user.username }}</a>
+                    发布于&nbsp;{{ item.create_time|date:"Y-m-d H-i" }}&nbsp;
+                    <span class="glyphicon glyphicon-check"><a href="#">评论({{ item.comment_count }})</a></span>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-thumbs-up"><a href="#">点赞({{ item.up_count }})</a></span>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-share"><a href="#"
+                                                               class="gray">阅读({{ item.read_count }})</a></span>
+                </div>
+                <hr>
+
+            {% endfor %}
+        </div>
+        <div class="col-md-3">
+            <div id="side_right">
+                <div id="search_block">
+                    <div class="side_search">
+                        <input type="text" id="zzk_q" class="search_input" onkeydown="return zzk_go_enter(event);"
+                               tabindex="3"><input onclick="zzk_go()" type="button" class="search_btn" value="找找看">
+                    </div>
+                    <div id="google_search" class="side_search">
+                        <input type="text" id="google_search_q" class="search_input"
+                               onkeydown="return google_search_enter(event);"><input type="button" value="Google"
+                                                                                     class="search_btn"
+                                                                                     onclick="return google_search();">
+                    </div>
+                </div>
+                <div id="cnblogs_a1"></div>
+                <div id="cnblogs_b1" class="sidebar-image"></div>
+                <div id="ad_right_text" class="ad_right_text"></div>
+                <div id="side_right_block">
+                    <div class="w_r">
+                        <h4><a href="http://news.cnblogs.com/">最新新闻</a><span class="more"><a
+                                href="http://news.cnblogs.com/" class="right_more">»</a></span></h4>
+                        <ul>
+                            <li><a href="http://news.cnblogs.com/n/583156/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="百度“阵亡全家桶”大盘点：巨头养个儿子也难活啊">百度“阵亡全家桶”大盘点：巨头养个儿子也难活啊</a>
+                            </li>
+                            <li><a href="http://news.cnblogs.com/n/583155/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="为了让iPhone实时运行人脸检测算法，苹果原来做了这么多努力">为了让iPhone实时运行人脸检测算法，苹果原来做了这么多努力</a>
+                            </li>
+                            <li><a href="http://news.cnblogs.com/n/583154/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="Linux 4.14发现能导致数据丢失的严重Bug">Linux
+                                4.14发现能导致数据丢失的严重Bug</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583153/" target="_blank"
+                                   onmouseover="set_a_title(this);">苹果HomePod秘闻：源自iPhone 5时代，直到杀出一个对手</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583152/" target="_blank"
+                                   onmouseover="set_a_title(this);"
+                                   title="拿下《绝地求生》，对于腾讯的意义在哪里？">拿下《绝地求生》，对于腾讯的意义在哪里？</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583151/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="网易严选真的火了？它只是打头阵而已">网易严选真的火了？它只是打头阵而已</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583150/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="科大讯飞市值突破1000亿大关，能否扛起AI大旗？">科大讯飞市值突破1000亿大关，能否扛起AI大旗？</a>
+                            </li>
+                            <li><a href="http://news.cnblogs.com/n/583149/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="这场让硅谷工程师一票难求的技术分享会，滴滴都讲了啥？">这场让硅谷工程师一票难求的技术分享会，滴滴都讲了啥？</a>
+                            </li>
+                            <li><a href="http://news.cnblogs.com/n/583148/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="腾讯宣布代理《绝地求生》后，Steam多了一波差评">腾讯宣布代理《绝地求生》后，Steam多了一波差评</a>
+                            </li>
+                            <li><a href="http://news.cnblogs.com/n/583147/" target="_blank"
+                                   onmouseover="set_a_title(this);" title="高功能团队管理原则：要么直接拒绝，要么坚定执行">高功能团队管理原则：要么直接拒绝，要么坚定执行</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w_r">
+                        <h4><a href="/aggsite/topviews">48小时阅读排行</a><span class="more"><a href="/aggsite/topviews"
+                                                                                          class="right_more">»</a></span>
+                        </h4>
+                        <ul>
+                            <li><a href="http://www.cnblogs.com/freeflying/p/7875014.html" target="_blank"
+                                   onmouseover="set_a_title(this);" title="为创业我做了十年的程序员，你告诉我“程序员不适合创业”？！">为创业我做了十年的程序员，你告诉我“程序员不适合创业”？！</a>
+                            </li>
+                            <li><a href="http://www.cnblogs.com/RainingNight/p/authorization-in-asp-net-core.html"
+                                   target="_blank" onmouseover="set_a_title(this);" title="ASP.NET Core 认证与授权[5]:初识授权">ASP.NET
+                                Core 认证与授权[5]:初识授权</a></li>
+                            <li><a href="http://www.cnblogs.com/liuhaoyang/p/aspectcore-getting-started.html"
+                                   target="_blank" onmouseover="set_a_title(this);">使用AspectCore动态代理</a></li>
+                            <li><a href="http://www.cnblogs.com/running-runtu/p/7877640.html" target="_blank"
+                                   onmouseover="set_a_title(this);">从北京回来的年轻人，我该告诉你点什么？</a></li>
+                            <li><a href="http://www.cnblogs.com/tommylemon/p/7821324.html" target="_blank"
+                                   onmouseover="set_a_title(this);">后端自动化版本管理，再也不用改URL了！</a></li>
+                            <li><a href="http://www.cnblogs.com/cncc/p/7873834.html" target="_blank"
+                                   onmouseover="set_a_title(this);">[C#]使用dnSpy对目标程序(EXE或DLL)进行反编译修改并编译运行</a></li>
+                            <li><a href="http://www.cnblogs.com/zhang-can/p/7867750.html" target="_blank"
+                                   onmouseover="set_a_title(this);">处理跨域请求</a></li>
+                            <li><a href="http://www.cnblogs.com/wuhuacong/p/7877830.html" target="_blank"
+                                   onmouseover="set_a_title(this);">Winform界面中实现菜单列表的动态个性化配置管理</a></li>
+                            <li><a href="http://www.cnblogs.com/liuhaorain/p/7865008.html" target="_blank"
+                                   onmouseover="set_a_title(this);">RabbitMQ消息队列系列教程（一）认识RabbitMQ</a></li>
+                            <li><a href="http://www.cnblogs.com/xiaoliangge/p/7872050.html" target="_blank"
+                                   onmouseover="set_a_title(this);">ASP.NET Core缓存静态资源</a></li>
+                        </ul>
+                    </div>
+                    <div class="w_r">
+                        <h4><a href="/aggsite/topdiggs">10天推荐排行</a><span class="more"><a href="/aggsite/topdiggs"
+                                                                                         class="right_more">»</a></span>
+                        </h4>
+                        <ul>
+                            <li><a href="http://www.cnblogs.com/chanshuyi/p/some_experienc_in_system_refactor.html"
+                                   target="_blank" onmouseover="set_a_title(this);">浅谈重构中踩过的坑</a></li>
+                            <li><a href="http://www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html" target="_blank"
+                                   onmouseover="set_a_title(this);">全面理解 ASP.NET Core 依赖注入</a></li>
+                            <li><a href="http://www.cnblogs.com/jesse2013/p/learn-aspnetcore.html" target="_blank"
+                                   onmouseover="set_a_title(this);">极简版ASP.NET Core学习路径及教程</a></li>
+                            <li><a href="http://www.cnblogs.com/maxzhang1985/p/7836088.html" target="_blank"
+                                   onmouseover="set_a_title(this);">讨论.NET Core 配置对GC 工作模式与内存的影响</a></li>
+                            <li><a href="http://www.cnblogs.com/ramantic/p/7866537.html" target="_blank"
+                                   onmouseover="set_a_title(this);">基于 Vue.js 之 iView UI 框架非工程化实践记要</a></li>
+                            <li><a href="http://www.cnblogs.com/freeflying/p/7875014.html" target="_blank"
+                                   onmouseover="set_a_title(this);">为创业我做了十年的程序员，你告诉我“程序员不适合创业”？！</a></li>
+                            <li><a href="http://www.cnblogs.com/RainingNight/p/authorization-in-asp-net-core.html"
+                                   target="_blank" onmouseover="set_a_title(this);">ASP.NET Core 认证与授权[5]:初识授权</a></li>
+                            <li><a href="http://www.cnblogs.com/jesse2013/p/aspnetcore-videos.html" target="_blank"
+                                   onmouseover="set_a_title(this);">这应该是目前最快速有效的ASP.NET Core学习方式（视频）</a></li>
+                            <li><a href="http://www.cnblogs.com/ityouknow/p/7864800.html" target="_blank"
+                                   onmouseover="set_a_title(this);">阿里Dubbo疯狂更新，关Spring Cloud什么事？</a></li>
+                            <li><a href="http://www.cnblogs.com/sanshi/p/7841104.html" target="_blank"
+                                   onmouseover="set_a_title(this);">[ASP.NET Core 2.0 前方速报]Core 2.0.3 已经支持引用第三方程序集了</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w_r">
+                        <h4><a href="/aggsite/headline">编辑推荐</a><span class="more"><a href="/aggsite/headline"
+                                                                                      class="right_more">»</a></span>
+                        </h4>
+                        <ul>
+                            <li><a href="http://www.cnblogs.com/ityouknow/p/7864800.html" target="_blank"
+                                   onmouseover="set_a_title(this);">阿里Dubbo疯狂更新，关Spring Cloud什么事</a></li>
+                            <li><a href="http://www.cnblogs.com/makor/p/remote-control-manager.html" target="_blank"
+                                   onmouseover="set_a_title(this);">Celery 源码解析五： 远程控制管理</a></li>
+                            <li><a href="http://www.cnblogs.com/jesse2013/p/di-in-aspnetcore.html" target="_blank"
+                                   onmouseover="set_a_title(this);">全面理解 ASP.NET Core 依赖注入</a></li>
+                            <li><a href="http://www.cnblogs.com/chanshuyi/p/some_experienc_in_system_refactor.html"
+                                   target="_blank" onmouseover="set_a_title(this);">浅谈重构中踩过的坑</a></li>
+                            <li><a href="http://www.cnblogs.com/erwin/p/7828956.html" target="_blank"
+                                   onmouseover="set_a_title(this);">实现一个博弈型的AI，从五子棋开始（1）</a></li>
+                            <li><a href="http://www.cnblogs.com/running-runtu/p/7824784.html" target="_blank"
+                                   onmouseover="set_a_title(this);">回顾自己三次失败的面试经历</a></li>
+                            <li><a href="http://www.cnblogs.com/xybaby/p/7787034.html" target="_blank"
+                                   onmouseover="set_a_title(this);">什么是分布式系统，如何学习分布式系统</a></li>
+                            <li><a href="http://www.cnblogs.com/artech/p/how-to-cross-platform-03.html" target="_blank"
+                                   onmouseover="set_a_title(this);">.NET Core跨平台的奥秘[下篇]：全新的布局</a></li>
+                        </ul>
+                    </div>
+                    <div class="w_r">
+                        <h4><a href="http://news.cnblogs.com/n/recommend">推荐新闻</a><span class="more"><a
+                                href="http://news.cnblogs.com/n/recommend" class="right_more">»</a></span></h4>
+                        <ul>
+                            <li><a href="http://news.cnblogs.com/n/583144/" target="_blank"
+                                   onmouseover="set_a_title(this);">Firefox Quantum隐私模式，速度甩Google Chrome好几条街</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583124/" target="_blank"
+                                   onmouseover="set_a_title(this);">腾讯获得《PUBG》游戏在中国的独家代理运营权</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583069/" target="_blank"
+                                   onmouseover="set_a_title(this);">马化腾身家已高达478亿美元 比谷歌创始人还高</a></li>
+                            <li><a href="http://news.cnblogs.com/n/583027/" target="_blank"
+                                   onmouseover="set_a_title(this);">为什么软件工程师找不到工作？我想分享四个“恐怖故事”</a></li>
+                            <li><a href="http://news.cnblogs.com/n/582978/" target="_blank"
+                                   onmouseover="set_a_title(this);">腾讯盘中超Facebook成全球第五大市值公司</a></li>
+                            <li><a href="http://news.cnblogs.com/n/582949/" target="_blank"
+                                   onmouseover="set_a_title(this);">马斯克最感性专访：我期待失败，也期待真爱</a></li>
+                            <li><a href="http://news.cnblogs.com/n/582931/" target="_blank"
+                                   onmouseover="set_a_title(this);">​微软的Visual Studio Tools for AI现已提供使用</a></li>
+                            <li><a href="http://news.cnblogs.com/n/582927/" target="_blank"
+                                   onmouseover="set_a_title(this);">周鸿祎新书讲述自己的前半生：这也是中国互联网史的缩影</a></li>
+                        </ul>
+                    </div>
+                    <div id="cnblogs_b3" class="sidebar-image"></div>
+                    <div class="w_r">
+                        <h4><a href="http://q.cnblogs.com/">博问高分问题</a><span class="more"><a href="http://q.cnblogs.com/"
+                                                                                            class="right_more">»</a></span>
+                        </h4>
+                        <ul>
+                            <li><a href="http://q.cnblogs.com/q/100285/" target="_blank"
+                                   onmouseover="set_a_title(this);">关于centos 7中docker的镜像启动</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100256/" target="_blank"
+                                   onmouseover="set_a_title(this);">想找一份用TP框架加mysql做的小项目（前台，后台），哪位大佬随手扔一份。</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100251/" target="_blank"
+                                   onmouseover="set_a_title(this);">问问谁有TP+MySQL做过的视屏播放网站（前台，后台），赶，没时间做</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100224/" target="_blank"
+                                   onmouseover="set_a_title(this);">下面的创建链表并且删除指定节点的代码，请帮我改改吧！</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100180/" target="_blank"
+                                   onmouseover="set_a_title(this);">关于unity 发布Webgl项目的问题</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100070/" target="_blank"
+                                   onmouseover="set_a_title(this);">vs2008 vss2005</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100023/" target="_blank"
+                                   onmouseover="set_a_title(this);">求助：如何进行文件导入功能的性能测试</a></li>
+                            <li><a href="http://q.cnblogs.com/q/100004/" target="_blank"
+                                   onmouseover="set_a_title(this);">python 的 scapy 模块如何能实现 ping of death 和 Nestea
+                                attack</a></li>
+                        </ul>
+                    </div>
+                    <div class="w_r">
+                        <h4><a href="http://kb.cnblogs.com/">知识库最新文章</a><span class="more"><a
+                                href="http://kb.cnblogs.com/" class="right_more">»</a></span></h4>
+                        <ul>
+                            <li><a href="http://kb.cnblogs.com/page/112506/" target="_blank"
+                                   onmouseover="set_a_title(this);">大道至简，职场上做人做事做管理</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/563790/" target="_blank"
+                                   onmouseover="set_a_title(this);">关于编程，你的练习是不是有效的？</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/581467/" target="_blank"
+                                   onmouseover="set_a_title(this);">改善程序员生活质量的 3+10 习惯</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/568841/" target="_blank"
+                                   onmouseover="set_a_title(this);">NASA的10条代码编写原则</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/578502/" target="_blank"
+                                   onmouseover="set_a_title(this);">为什么你参加了那么多培训，却依然表现平平？</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/579832/" target="_blank"
+                                   onmouseover="set_a_title(this);">写给初学前端工程师的一封信</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/579480/" target="_blank"
+                                   onmouseover="set_a_title(this);">实用VPC虚拟私有云设计原则</a></li>
+                            <li><a href="http://kb.cnblogs.com/page/576251/" target="_blank"
+                                   onmouseover="set_a_title(this);">如何阅读计算机科学类的书</a></li>
+                        </ul>
+                    </div>
+                    <div id="cnblogs_b4" class="sidebar-image"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+    <nav class="navbar navbar-fixed-bottom">
+        <div class="fg">Copyright@2017<a href="http://www.cnblogs.com/yifugui/">Fugui</a></div>
+    </nav>
+</div>
+<script src="/static/jquery-3.2.1.js"></script>
+<script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+<script>
+    $(".cate_title_muse").mouseover(function () {
+        $(this).next().slideDown(300)
+    }).parent().mouseleave(function () {
+        $(this).children(".panel-footer").slideUp(300)
+    })
+
+</script>
+
+</body>
+</html>

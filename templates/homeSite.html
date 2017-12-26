@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/jquery-3.2.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="/static/kindeditor/kindeditor-all.js"></script>
+    <link rel="stylesheet" href="/static/css/homoSite.css">
+    <link rel="stylesheet" href="/static/css/article_detail.css">
+    <link rel="stylesheet" href="/static/user_home_style/{{ current_user.blog.theme }}">
+    {% load Myfilters %}
+</head>
+<body>
+
+<div id="header">
+    <div id="blogTitle">
+        <div class="title"><a href="#"><h2><span id="username">{{ username }}</span></h2></a>
+        </div>
+    </div>
+    <div id="navigator">
+
+        <ul id="navList">
+            <li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="/">博客园</a></li>
+            <li id="nav_myhome"><a id="blog_nav_myhome" class="menu" href="/blog/{{ request.user.username }}">首页</a></li>
+            <li id="nav_newpost"><a id="blog_nav_newpost" class="menu" rel="nofollow"
+                                    href="/blog/backend/addarticle/">新随笔</a></li>
+            <li id="nav_contact"><a id="blog_nav_contact" class="menu" rel="nofollow"
+                                    href="#">联系</a></li>
+            <li id="nav_rss"><a id="blog_nav_rss" class="menu" href="#">订阅</a>
+            </li>
+            <li id="nav_admin"><a id="blog_nav_admin" class="menu" rel="nofollow" href="/blog/backend/">管理</a>
+            </li>
+        </ul>
+
+        <div class="blogStats">
+
+            <div id="blog_stats">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="main">
+    <div id="sideBar" class="col-md-3">
+        <div id="sideBarMain">
+            <!--done-->
+            <div class="newsItem">
+                <h3 class="catListTitle">公告</h3>
+                 <div id="img">
+                     {% for item in img %}
+                      <a href="">
+                          <img width="100" height="100" src="/media/{{ item.avatar }}"/></a>
+                     {% endfor %}
+                </div>
+                <div id="profile_block">昵称：<a href="#">{{ username }}</a><br>园龄：<a
+                        href="#" id="Age_of_orchard">{{ current_user.create_time | Age_of_orchard |slice:"0:-10" }}</a><br>粉丝：<a
+                        href="#">0</a><br>关注：<a
+                        href="#">0</a>
+                    <div id="p_b_follow"><a href="">+加关注</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="calendar">
+            <div id="blog-calendar" style="">
+                <table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+                    <tbody>
+                    <tr>
+                        <td colspan="7">
+                            <table class="CalTitle" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td class="CalNextPrev"><a href=""
+                                                               >&lt;</a>
+                                    </td>
+                                    <td align="center">2017年11月</td>
+                                    <td class="CalNextPrev" align="right"><a href="">&gt;</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+                        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+                        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+                        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+                        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+                        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+                        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+                    </tr>
+                    <tr>
+                        <td class="CalOtherMonthDay" align="center">29</td>
+                        <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="CalOtherMonthDay" align="center">31</td>
+                        <td align="center">1</td>
+                        <td align="center">2</td>
+                        <td align="center">3</td>
+                        <td class="CalWeekendDay" align="center">4</td>
+                    </tr>
+                    <tr>
+                        <td class="CalWeekendDay" align="center">5</td>
+                        <td align="center">6</td>
+                        <td align="center">7</td>
+                        <td align="center">8</td>
+                        <td align="center">9</td>
+                        <td align="center">10</td>
+                        <td class="CalWeekendDay" align="center">11</td>
+                    </tr>
+                    <tr>
+                        <td class="CalWeekendDay" align="center">12</td>
+                        <td align="center">13</td>
+                        <td align="center">14</td>
+                        <td align="center">15</td>
+                        <td align="center">16</td>
+                        <td align="center">17</td>
+                        <td class="CalWeekendDay" align="center">18</td>
+                    </tr>
+                    <tr>
+                        <td class="CalWeekendDay" align="center">19</td>
+                        <td align="center">20</td>
+                        <td align="center">21</td>
+                        <td class="CalTodayDay" align="center">22</td>
+                        <td align="center">23</td>
+                        <td align="center">24</td>
+                        <td class="CalWeekendDay" align="center">25</td>
+                    </tr>
+                    <tr>
+                        <td class="CalWeekendDay" align="center">26</td>
+                        <td align="center">27</td>
+                        <td align="center">28</td>
+                        <td align="center">29</td>
+                        <td align="center">30</td>
+                        <td class="CalOtherMonthDay" align="center">1</td>
+                        <td class="CalOtherMonthDay" align="center">2</td>
+                    </tr>
+                    <tr>
+                        <td class="CalOtherMonthDay" align="center">3</td>
+                        <td class="CalOtherMonthDay" align="center">4</td>
+                        <td class="CalOtherMonthDay" align="center">5</td>
+                        <td class="CalOtherMonthDay" align="center">6</td>
+                        <td class="CalOtherMonthDay" align="center">7</td>
+                        <td class="CalOtherMonthDay" align="center">8</td>
+                        <td class="CalOtherMonthDay" align="center">9</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div id="leftcontentcontainer">
+            <div id="blog-sidecolumn">
+                <div id="sidebar_toptags" class="sidebar-block">
+                    <div class="catListTag">
+                        <h3 class="catListTitle">我的标签</h3>
+                        <ul>
+                            {% for tag in tag_list %}
+                                <li>
+                                    <a href="/blog/{{ current_user.username }}/tag/{{ tag.0 }}">{{ tag.0 }}&nbsp;&nbsp;({{ tag.1 }})</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="sidebar_categories">
+                    <div class="catListPostCategory">
+                        <h3 class="catListTitle">随笔分类</h3>
+                        <ul>
+                            {% for category in category_list %}
+                                <li>
+                                    <a href="/blog/{{ current_user.username }}/category/{{ category.0 }}">{{ category.0 }}&nbsp;&nbsp;({{ category.1 }})</a>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    <div class="catListPostArchive">
+                        <h3 class="catListTitle">随笔档案</h3>
+                        <ul>
+                            {% for date in date_list %}
+                                <li><a href="/blog/{{ current_user.username }}/date/{{ date.0}}">{{ date.0 }}&nbsp;&nbsp;({{ date.1 }})</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="sidebar_recentcomments" class="sidebar-block">
+                    <div id="recent_comments_wrap">
+                        <div class="catListComment">
+                            <h3 class="catListTitle">最新评论</h3>
+                            <div id="RecentCommentsBlock">
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!--end: sideBarMain -->
+    <div class="col-md-9">
+    {% block content %}
+        {% for item in data_list %}
+                <h3><a class="titlelnk" href="/blog/{{ current_user.username }}/articles/{{ item.nid }}">{{ item.title }}</a></h3>
+                <div class="post_item_summary">
+                    <div style="float: left">
+                        <a href="/blog/{{ item.user.username }}" target="_blank"><img width="60" height="60" class="pfs"
+                                                                                      src="/media/{{ item.user.avatar }}"
+                                                                                      alt=""/></a>
+                    </div>
+                    <div style="margin-left: 70px">{{ item.desc }} ...</div>
+                </div>
+                <br>
+                <div class="post_item_foot">
+                <a href="/blog/{{ item.user.username }}" class="lightblue">{{ item.user.username }}</a>
+                发布于&nbsp;{{ item.create_time|date:"Y-m-d H-i" }}&nbsp;
+                <span class="glyphicon glyphicon-check"><a href="#">评论({{ item.comment_count }})</a></span>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-thumbs-up"><a href="#">点赞({{ item.up_count }})</a></span>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-share"><a href="#"
+                                                           class="gray">阅读({{ item.read_count }})</a></span>
+            </div>
+        {% endfor %}
+    {% endblock %}
+    </div>
+</div>
+
+
+
+</body>
+</html>
